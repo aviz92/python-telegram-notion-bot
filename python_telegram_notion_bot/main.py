@@ -22,6 +22,18 @@ for telegram_noisy_logger in [
 ]:
     logging.getLogger(telegram_noisy_logger).setLevel(logging.WARNING)
 
+
+def data_preparation(text: str) -> tuple[str, str]:
+    for prefix in TASK_PREFIXES + IDEA_PREFIXES:
+        # text = text.replace(prefix, '', 1).strip()
+        if prefix.lower() not in text.lower():
+            continue
+
+        text = text[len(prefix):]
+    name, description = text.split("\n\n", 1)
+    return name, description
+
+
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     notion_client = context.application.bot_data["notion_client"]
 
@@ -36,15 +48,10 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text("Please start your message with 'task' or 'idea'.")
         return
 
-    for prefix in TASK_PREFIXES + IDEA_PREFIXES:
-        # text = text.replace(prefix, '', 1).strip()
-        if prefix.lower() not in text.lower():
-            continue
-
-        text = text[len(prefix):]
-
+    name, description = data_preparation(text)
     notion_client.add_row_to_db(
-        name=text.strip(),
+        name=name.strip(),
+        description=description.strip(),
         notion_database_id=notion_db_id
     )
 
