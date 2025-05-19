@@ -1,0 +1,8 @@
+# Dont forget to use the following command to load the environment variables:
+    # from dotenv import load_dotenv
+    # load_dotenv()
+
+# Passwords:
+    # Notion Credentials
+        NOTION_ADDRESS=''
+        NOTION_TOKEN=''

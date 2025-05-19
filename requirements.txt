@@ -1,0 +1,12 @@
+setuptools
+wheel
+dotenv
+twine
+pytest
+retrying
+pytz
+nest_asyncio
+python-telegram-bot
+
+custom-python-logger
+python-notion-plus
