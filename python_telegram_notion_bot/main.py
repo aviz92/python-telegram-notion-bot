@@ -65,6 +65,7 @@ async def main():
     logger.info("Bot started...")
     app.run_polling()
 
+
 if __name__ == "__main__":
     _ = get_logger(
         project_name='Logger Project Test',
