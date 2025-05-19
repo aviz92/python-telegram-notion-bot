@@ -25,7 +25,6 @@ for telegram_noisy_logger in [
 
 def data_preparation(text: str) -> tuple[str, str]:
     for prefix in TASK_PREFIXES + IDEA_PREFIXES:
-        # text = text.replace(prefix, '', 1).strip()
         if prefix.lower() not in text.lower():
             continue
 
