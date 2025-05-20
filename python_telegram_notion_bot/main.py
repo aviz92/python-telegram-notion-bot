@@ -29,7 +29,8 @@ def data_preparation(text: str) -> tuple[str, str]:
             continue
 
         text = text[len(prefix):]
-    name, description = text.split("\n\n", 1)
+    text_split = text.split("\n\n", 1)
+    name, description = text_split if len(text_split) > 1 else (text_split[0], "")
     return name, description
 
 

@@ -4,5 +4,9 @@
 
 # Passwords:
     # Notion Credentials
-        NOTION_ADDRESS=''
-        NOTION_TOKEN=''
+        NOTION_TOKEN='your_notion_token'
+
+    # Telegram Credentials
+        TELEGRAM_TOKEN='your_telegram_token'
+        NOTION_TASKER_DB_ID="your_notion_tasker_db_id"
+        NOTION_IDEAS_DB_ID="your_notion_ideas_db_id"
