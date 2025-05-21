@@ -1,7 +1,9 @@
+import datetime
 import logging
 import os
 import asyncio
 import nest_asyncio
+import pytz
 from telegram import Update
 from telegram.ext import ApplicationBuilder, MessageHandler, filters, ContextTypes
 
@@ -21,6 +23,23 @@ for telegram_noisy_logger in [
     "telegram.ext._application", "telegram.bot", "telegram.client"
 ]:
     logging.getLogger(telegram_noisy_logger).setLevel(logging.WARNING)
+
+
+def build_properties(name: str, description: str) -> dict:
+    jerusalem = pytz.timezone("Asia/Jerusalem")
+    due_date = jerusalem.localize(
+        datetime.datetime.now() + datetime.timedelta(days=1)
+    ).replace(hour=10, minute=0, second=0, microsecond=0)
+    properties = {
+        "Done": {"checkbox": False},
+        "Name": {"title": [{"text": {"content": name}}]},
+        "Description": {"rich_text": [{"text": {"content": description}}]},
+        "Status": {"status": {"name": "Not started"}},
+        "Type": {"multi_select": []},
+        "Date": {"date": {"start": datetime.datetime.now(pytz.timezone("Asia/Jerusalem")).isoformat()}},
+        # "Due Date": {"date": {"start": due_date.isoformat()}},
+    }
+    return properties
 
 
 def data_preparation(text: str) -> tuple[str, str]:
@@ -49,10 +68,10 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     name, description = data_preparation(text)
+    properties = build_properties(name=name.strip(), description=description.strip())
     notion_client.add_row_to_db(
-        name=name.strip(),
-        description=description.strip(),
-        notion_database_id=notion_db_id
+        notion_database_id=notion_db_id,
+        properties=properties
     )
 
     await update.message.reply_text("Row added to Notion!")
