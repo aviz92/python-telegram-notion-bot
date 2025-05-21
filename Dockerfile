@@ -9,13 +9,13 @@ RUN apt-get update && apt-get install -y \
     build-essential \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements (if you have one)
+# Copy requirements (if you have one)  # Execute again only if requirements.txt changes
 COPY requirements.txt .
 
 # Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy application files
+# Copy application files  # Execute again if application files change
 COPY . .
 
 # Set environment variables (optional defaults)
