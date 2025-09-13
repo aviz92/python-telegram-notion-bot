@@ -8,7 +8,7 @@ from telegram import Update
 from telegram.ext import ApplicationBuilder, MessageHandler, filters, ContextTypes
 
 from python_notion_plus import NotionClient
-from custom_python_logger import get_logger
+from custom_python_logger import get_logger, build_logger
 
 TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
 NOTION_TASKER_DB_ID = os.getenv("NOTION_TASKER_DB_ID")
@@ -17,7 +17,7 @@ NOTION_IDEAS_DB_ID = os.getenv("NOTION_IDEAS_DB_ID")
 TASK_PREFIXES = ('task', 'משימה')
 IDEA_PREFIXES = ('idea', 'רעיון')
 
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 for telegram_noisy_logger in [
     "telegram", "httpx", "httpcore", "apscheduler", "asyncio",
     "telegram.ext._application", "telegram.bot", "telegram.client"
@@ -87,7 +87,7 @@ async def main():
 
 
 if __name__ == "__main__":
-    _ = get_logger(
+    _ = build_logger(
         project_name='Logger Project Test',
         log_level=logging.DEBUG,
         # extra={'user': 'test_user'}
